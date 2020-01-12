@@ -20,6 +20,7 @@
       <parameter key="MonologBundle">Symfony\Bundle\MonologBundle\MonologBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="MakerBundle">Symfony\Bundle\MakerBundle\MakerBundle</parameter>
+      <parameter key="WebServerBundle">Symfony\Bundle\WebServerBundle\WebServerBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -65,6 +66,10 @@
       <parameter key="MakerBundle" type="collection">
         <parameter key="path">/Users/Harm/Sites/symfony4/beginner/vendor/symfony/maker-bundle/src</parameter>
         <parameter key="namespace">Symfony\Bundle\MakerBundle</parameter>
+      </parameter>
+      <parameter key="WebServerBundle" type="collection">
+        <parameter key="path">/Users/Harm/Sites/symfony4/beginner/vendor/symfony/web-server-bundle</parameter>
+        <parameter key="namespace">Symfony\Bundle\WebServerBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -1637,6 +1642,8 @@
           <argument>/Users/Harm/Sites/symfony4/beginner/src/Resources/DebugBundle/translations</argument>
           <argument>/Users/Harm/Sites/symfony4/beginner/vendor/symfony/maker-bundle/src/translations</argument>
           <argument>/Users/Harm/Sites/symfony4/beginner/src/Resources/MakerBundle/translations</argument>
+          <argument>/Users/Harm/Sites/symfony4/beginner/vendor/symfony/web-server-bundle/translations</argument>
+          <argument>/Users/Harm/Sites/symfony4/beginner/src/Resources/WebServerBundle/translations</argument>
           <argument>/Users/Harm/Sites/symfony4/beginner/src/Resources/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
@@ -1667,6 +1674,8 @@
             <argument>src/Resources/DebugBundle/translations</argument>
             <argument>vendor/symfony/maker-bundle/src/translations</argument>
             <argument>src/Resources/MakerBundle/translations</argument>
+            <argument>vendor/symfony/web-server-bundle/translations</argument>
+            <argument>src/Resources/WebServerBundle/translations</argument>
             <argument>src/Resources/translations</argument>
           </argument>
         </argument>
@@ -4591,6 +4600,44 @@
       <tag name="maker.command"/>
       <argument>/Users/Harm/Sites/symfony4/beginner</argument>
     </service>
+    <service id="web_server.command.server_run" class="Symfony\Bundle\WebServerBundle\Command\ServerRunCommand" public="false">
+      <tag name="console.command" command="server:run"/>
+      <argument>/Users/Harm/Sites/symfony4/beginner/public</argument>
+      <argument>dev</argument>
+      <argument>/Users/Harm/Sites/symfony4/beginner/var/cache</argument>
+      <call method="setName">
+        <argument>server:run</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_start" class="Symfony\Bundle\WebServerBundle\Command\ServerStartCommand" public="false">
+      <tag name="console.command" command="server:start"/>
+      <argument>/Users/Harm/Sites/symfony4/beginner/public</argument>
+      <argument>dev</argument>
+      <argument>/Users/Harm/Sites/symfony4/beginner/var/cache</argument>
+      <call method="setName">
+        <argument>server:start</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_stop" class="Symfony\Bundle\WebServerBundle\Command\ServerStopCommand" public="false">
+      <tag name="console.command" command="server:stop"/>
+      <argument>/Users/Harm/Sites/symfony4/beginner/var/cache</argument>
+      <call method="setName">
+        <argument>server:stop</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_status" class="Symfony\Bundle\WebServerBundle\Command\ServerStatusCommand" public="false">
+      <tag name="console.command" command="server:status"/>
+      <argument>/Users/Harm/Sites/symfony4/beginner/var/cache</argument>
+      <call method="setName">
+        <argument>server:status</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_log" class="Symfony\Bundle\WebServerBundle\Command\ServerLogCommand" public="false">
+      <tag name="console.command" command="server:log"/>
+      <call method="setName">
+        <argument>server:log</argument>
+      </call>
+    </service>
     <service id=".service_locator.CmORmuK" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -5183,7 +5230,7 @@
       <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
-      <argument type="service" id=".service_locator.YQT1s2V"/>
+      <argument type="service" id=".service_locator.9fiEKfq"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -5245,6 +5292,11 @@
         <argument key="doctrine:migrations:version">doctrine_migrations.version_command</argument>
         <argument key="security:encode-password">security.command.user_password_encoder</argument>
         <argument key="server:dump">var_dumper.command.server_dump</argument>
+        <argument key="server:run">web_server.command.server_run</argument>
+        <argument key="server:start">web_server.command.server_start</argument>
+        <argument key="server:stop">web_server.command.server_stop</argument>
+        <argument key="server:status">web_server.command.server_status</argument>
+        <argument key="server:log">web_server.command.server_log</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
         <argument key="make:command">maker.auto_command.make_command</argument>
         <argument key="make:controller">maker.auto_command.make_controller</argument>
@@ -5265,7 +5317,7 @@
         <argument key="make:migration">maker.auto_command.make_migration</argument>
       </argument>
     </service>
-    <service id=".service_locator.YQT1s2V" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.9fiEKfq" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service" id="console.command.about"/>
@@ -5346,6 +5398,11 @@
         <argument key="twig.command.debug" type="service" id="twig.command.debug"/>
         <argument key="twig.command.lint" type="service" id="twig.command.lint"/>
         <argument key="var_dumper.command.server_dump" type="service" id="var_dumper.command.server_dump"/>
+        <argument key="web_server.command.server_log" type="service" id="web_server.command.server_log"/>
+        <argument key="web_server.command.server_run" type="service" id="web_server.command.server_run"/>
+        <argument key="web_server.command.server_start" type="service" id="web_server.command.server_start"/>
+        <argument key="web_server.command.server_status" type="service" id="web_server.command.server_status"/>
+        <argument key="web_server.command.server_stop" type="service" id="web_server.command.server_stop"/>
       </argument>
     </service>
     <service id="cache.app.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" public="false">
